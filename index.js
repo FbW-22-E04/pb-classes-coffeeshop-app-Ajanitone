@@ -64,12 +64,11 @@ class CoffeeShop {
   }
   addOrder(item) {
     const result = this.menu.filter((el) => el.name === item);
-    if (result.length === 0) {
-      console.log("This item is not available");
+    if (result.length > 0) {
+      this.orders.push(item);
     } else {
-      this.menu.push(item);
+      console.log("This item is currently unavailable");
     }
-    return result;
   }
 
   fulfillOrder() {
@@ -78,29 +77,49 @@ class CoffeeShop {
       : "All orders have been fulfilled!";
   }
   listOrders() {
-    return this.orders.filter((item) => {
-      `Name ${item.name}, Price ${item.price}`;
-    });
+    return `Orders are ${this.orders}`;
   }
   dueAmount() {
-    return this.orders.reduce((acc, item) => acc + item.price, 0);
+    let total = 0;
+    this.orders.forEach((item) => {
+      const price = this.menu.find((el) => el.name === item).price;
+      total += price;
+    });
+    return console.log(`The due amount is ${total}`);
   }
 
   cheapestItem() {
-    return this.menu.reduce(
-      (acc, item) => (acc > item.price ? acc : `${item.name} ${item.price}`),
-      0
+    // return this.menu.reduce(
+    //   (acc, item) => (acc > item.price ? acc : `${item.name} ${item.price}`),
+    //   0
+    // );
+    let cheapest = {
+      price: Infinity,
+      name: "",
+    };
+    this.menu.forEach((el) => {
+      if (el.price < cheapest.price) {
+        cheapest.price = el.price;
+        cheapest.name = el.name;
+      }
+    });
+    console.log(
+      "The cheapest item is:",
+      cheapest.name,
+      "price:",
+      cheapest.price
     );
+    return cheapest.price;
   }
   drinksOnly() {
     const drinks = [];
     this.menu.filter((item) => {
       if (item.type === "drink") {
         drinks.push(item.name);
-        console.log(`The drinks are ${drinks}`);
       }
-      return drinks;
+      return console.log(`The drinks are ${drinks}`);
     });
+    return drinks;
   }
   foodOnly() {
     const food = [];
@@ -121,5 +140,12 @@ mocca.addItem({ name: "lemonade", type: "drink", price: 2 });
 mocca.addItem({ name: "lemon cake", type: "food", price: 4 });
 mocca.addItem({ name: "orange juice", type: "drink", price: 3 });
 mocca.addOrder("lemonade");
+mocca.addOrder("fruit cake");
+mocca.addOrder("lemon cake");
 
+console.log(mocca.fulfillOrder());
+console.log(mocca.listOrders());
+console.log(mocca.dueAmount());
+console.log(mocca.cheapestItem());
+console.log(mocca.drinksOnly());
 console.log(mocca.foodOnly());
