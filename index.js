@@ -112,23 +112,12 @@ class CoffeeShop {
     return cheapest.price;
   }
   drinksOnly() {
-    const drinks = [];
-    this.menu.filter((item) => {
-      if (item.type === "drink") {
-        drinks.push(item.name);
-      }
-      return console.log(`The drinks are ${drinks}`);
-    });
+    const drinks = this.menu.filter((item) => item.type === "drink");
+
     return drinks;
   }
   foodOnly() {
-    const food = [];
-    this.menu.filter((item) => {
-      if (item.type === "food") {
-        food.push(item.name);
-      }
-      return console.log(`The foods are ${food}`);
-    });
+    const food = this.menu.filter((item) => item.type === "food");
     return food;
   }
 }
